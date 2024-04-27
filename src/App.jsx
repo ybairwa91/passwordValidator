@@ -1,35 +1,47 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState } from "react";
+import "./App.css";
+import validator from "validator";
 
 function App() {
-  const [count, setCount] = useState(0)
+  return (
+    <div className="app">
+      <h1>Checking password Strength in ReactJS</h1>
+      <Form />
+    </div>
+  );
+}
+function Form() {
+  const [password, setPassword] = useState("");
+  function handlePassword(e) {
+    e.preventDefault();
+    setPassword(e.target.value);
+  }
 
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <div>
+      <form className="form" onChange={handlePassword}>
+        <label htmlFor="pass">Enter password:</label>
+        <input type="text" id="pass" value={password} name="password" />
+      </form>
+      {<p>Is password Strong</p>}
+
+      {validator.isStrongPassword(password, {
+        minLength: 8,
+        minLowercase: 1,
+        minUppercase: 1,
+        minSymbols: 1,
+        minNumbers: 1,
+      }) ? (
+        <Strong />
+      ) : (
+        ""
+      )}
+    </div>
+  );
 }
 
-export default App
+function Strong() {
+  return <h3 className="strong">Is strong password</h3>;
+}
+
+export default App;
